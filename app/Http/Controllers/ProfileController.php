@@ -5,9 +5,17 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Carbon\Carbon;
+use App\Services\JsonUserService;
 
 class ProfileController extends Controller
 {
+    protected $jsonUserService;
+
+    public function __construct(JsonUserService $jsonUserService)
+    {
+        $this->jsonUserService = $jsonUserService;
+    }
     public function edit()
     {
         $user = Auth::user();
@@ -16,7 +24,7 @@ class ProfileController extends Controller
             $data = $user;
             $data["read_from"] = "Adatbázisból";
         } else {
-            $data = $this->readFromJson($user->id);
+            $data = $this->jsonUserService->readFromJson($user->id) ?? $user;
             $data["read_from"] = "Fájlból";
         }
 
@@ -52,7 +60,7 @@ class ProfileController extends Controller
         }
         $user->save();
 
-        $this->updateJson($user);
+        $this->jsonUserService->updateJson($user);
 
         return view('profile', [
             'success' => 'Profil frissítve',
@@ -60,53 +68,4 @@ class ProfileController extends Controller
         ]);
     }
 
-    private function readFromJson($userId)
-    {
-        $jsonPath = storage_path('app/users.json');
-
-        if (file_exists($jsonPath)) {
-            $jsonContent = json_decode(file_get_contents($jsonPath), true);
-
-            foreach ($jsonContent as $jsonUser) {
-                if ($jsonUser['id'] == $userId) {
-                    return (new \App\Models\User())->fill($jsonUser);
-                }
-            }
-        }
-
-        return Auth::user();
-    }
-
-
-    private function updateJson($user)
-    {
-        $jsonPath = storage_path('app/users.json');
-
-        if (file_exists($jsonPath)) {
-            $jsonContent = json_decode(file_get_contents($jsonPath), true);
-
-            foreach ($jsonContent as $index => $jsonUser) {
-                if ($jsonUser['id'] == $user->id) {
-                    $jsonContent[$index]['nickname'] = $user->nickname;
-                    $jsonContent[$index]['email'] = $user->email;
-                    $jsonContent[$index]['birthdate'] = $user->birthdate;
-                    break;
-                }
-            }
-
-            file_put_contents($jsonPath, json_encode($jsonContent, JSON_PRETTY_PRINT));
-        } else {
-            $newData = [
-                [
-                    'id' => $user->id,
-                    'nickname' => $user->nickname,
-                    'email' => $user->email,
-                    'birthdate' => $user->birthdate,
-                    'password' => $user->password,
-                ]
-            ];
-
-            file_put_contents($jsonPath, json_encode($newData, JSON_PRETTY_PRINT));
-        }
-    }
 }

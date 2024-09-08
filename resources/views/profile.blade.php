@@ -9,7 +9,6 @@
 
             <h6 class="text-base font-bold mb-6 text-center">Adatok beolvasva: {{ $user->read_from }}</h6>
 
-            <!-- Név mező -->
             <div class="mb-4">
                 <label for="nickname" class="block text-gray-700 font-medium">Becenév</label>
                 <input type="text" id="nickname" name="nickname" value="{{ old('nickname', $user->nickname) }}" class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring focus:ring-blue-300 focus:outline-none">
@@ -18,13 +17,11 @@
                 @enderror
             </div>
 
-            <!-- E-mail mező -->
             <div class="mb-4">
                 <label for="email" class="block text-gray-700 font-medium">E-mail cím</label>
                 <input type="email" id="email" name="email" value="{{ old('email', $user->email) }}" class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring focus:ring-blue-300 focus:outline-none" disabled>
             </div>
 
-            <!-- Születési dátum mező -->
             <div class="mb-4">
                 <label for="birthdate" class="block text-gray-700 font-medium">Születési dátum</label>
                 <input id="birthdate" name="birthdate" datepicker datepicker-format="yyyy-mm-dd" value="{{ old('birthdate', $user->birthdate) }}" type="text"  class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring focus:ring-blue-300 focus:outline-none">
@@ -33,7 +30,6 @@
                 @enderror
             </div>
 
-            <!-- Jelszó mező -->
             <div class="mb-4">
                 <label for="password" class="block text-gray-700 font-medium">Új jelszó</label>
                 <input type="password" id="password" name="password" class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring focus:ring-blue-300 focus:outline-none" placeholder="Hagyd üresen, ha nem akarod megváltoztatni">
@@ -42,7 +38,6 @@
                 @enderror
             </div>
 
-            <!-- Mentés gomb -->
             <div class="mt-6 text-center">
                 <button type="submit" class="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 focus:ring focus:ring-blue-300">Mentés</button>
             </div>

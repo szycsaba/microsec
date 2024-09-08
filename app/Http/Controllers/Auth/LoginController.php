@@ -13,7 +13,6 @@ class LoginController extends Controller
 {
     public function show()
     {
-        //dd(session()->all());
         return view('auth.login');
     }
 
@@ -43,6 +42,7 @@ class LoginController extends Controller
 
     public function logout(Request $request)
     {
+        $user = new User();
         Auth::logout();
         return view('auth.login', ['success' => 'Sikeres kijelentkezés!']);
     }

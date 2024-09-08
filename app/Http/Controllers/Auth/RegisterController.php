@@ -6,17 +6,18 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
+use Carbon\Carbon;
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Services\JsonUserService;
 
 class RegisterController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    protected $jsonUserService;
+
+    public function __construct(JsonUserService $jsonUserService)
     {
-        //
+        $this->jsonUserService = $jsonUserService;
     }
 
     /**
@@ -33,12 +34,7 @@ class RegisterController extends Controller
     public function store(Request $request)
     {
 
-        if (Storage::exists('users.json')) {
-            $jsonData = Storage::get('users.json');
-            $users = json_decode($jsonData, true); // Konvertálás PHP tömbbe
-        } else {
-            $users = [];
-        }
+        $users = $this->jsonUserService->getUsersFromJson();
 
         $validator = Validator::make($request->all(), [
             'email' => ['required', 'email', 'max:50', 'unique:users,email'],
@@ -69,54 +65,12 @@ class RegisterController extends Controller
         $user = User::create([
             'email' => $validated['email'],
             'nickname' => $validated['nickname'],
-            'birthdate' => $validated['birthdate'],
+            'birthdate' => Carbon::parse($validated['birthdate'])->format('Y-m-d'),
             'password' => $validated['password'],
         ]);
 
-        $userData = [
-            'id' => $user->id,
-            'email' => $user->email,
-            'nickname' => $user->nickname,
-            'birthdate' => $user->birthdate,
-            'password' => $user->password,
-        ];
-        $users[] = $userData;
-
-        $jsonData = json_encode($userData);
-        Storage::put('users.json', json_encode($users, JSON_PRETTY_PRINT));
+        $this->jsonUserService->saveUserToJson($user, $users);
 
         return view('auth.register', ['success' => 'Sikeres regisztráció!']);
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
     }
 }

@@ -15,7 +15,8 @@
                 <label for="email" class="block text-gray-700 text-sm font-bold mb-2">E-mail cím:</label>
                 <input type="email" name="email" id="email"
                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                       placeholder="Adja meg az e-mail címét">
+                       placeholder="Adja meg az e-mail címét"
+                       value="{{ old('email') }}">
                 @error('email')
                 <p class="text-red-500 text-xs italic">{{ $message }}</p>
                 @enderror
@@ -25,7 +26,8 @@
                 <label for="nickname" class="block text-gray-700 text-sm font-bold mb-2">Becenév:</label>
                 <input type="text" name="nickname" id="nickname"
                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                       placeholder="Adja meg a becenevét">
+                       placeholder="Adja meg a becenevét"
+                       value="{{ old('nickname') }}">
                 @error('nickname')
                 <p class="text-red-500 text-xs italic">{{ $message }}</p>
                 @enderror
@@ -35,7 +37,8 @@
                 <label for="birthdate" class="block text-gray-700 text-sm font-bold mb-2">Születési dátum:</label>
                 <input id="birthdate" name="birthdate" datepicker datepicker-format="yyyy-mm-dd" type="text"
                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                       placeholder="Adja meg születési dátumát">
+                       placeholder="Adja meg születési dátumát"
+                       value="{{ old('birthdate') }}">
                 @error('birthdate')
                 <p class="text-red-500 text-xs italic">{{ $message }}</p>
                 @enderror

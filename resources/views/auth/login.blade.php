@@ -14,7 +14,8 @@
                 <label for="email" class="block text-gray-700 text-sm font-bold mb-2">E-mail cím:</label>
                 <input type="email" name="email" id="email"
                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                       placeholder="Adja meg az e-mail címét">
+                       placeholder="Adja meg az e-mail címét"
+                       value="{{ old('email') }}">
                 @error('email')
                 <p class="text-red-500 text-xs italic">{{ $message }}</p>
                 @enderror
@@ -42,7 +43,7 @@
             </div>
 
             @if (isset($success))
-                <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mt-4 mb-4">
+                <div data-redirect-url="{{ route('profile.edit') }}" data-redirect-delay="2000" class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mt-4 mb-4">
                     <strong>{{ $success }}</strong>
                 </div>
             @endif
