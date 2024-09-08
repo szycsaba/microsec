@@ -27,7 +27,7 @@ class ProfileUpdateTest extends TestCase
 
         $response = $this->post(route('profile.update'), $updateData);
 
-        $this->assertDatabaseHas('users', [
+        $this->assertDatabaseHas('microsec_users', [
             'id' => $user->id,
             'nickname' => 'NewNickname',
             'birthdate' => '1995-05-05',

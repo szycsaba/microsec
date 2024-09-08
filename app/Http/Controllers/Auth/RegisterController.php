@@ -37,7 +37,7 @@ class RegisterController extends Controller
         $users = $this->jsonUserService->getUsersFromJson();
 
         $validator = Validator::make($request->all(), [
-            'email' => ['required', 'email', 'max:50', 'unique:users,email'],
+            'email' => ['required', 'email', 'max:50', 'unique:microsec_users,email'],
             'nickname' => ['required', 'string', 'max:255'],
             'birthdate' => ['required', 'date'],
             'password' => ['required', 'string', 'min:8'],
